@@ -15,7 +15,7 @@
 char	*ft_next_line(int fd, char *buff)
 {
 	char	*tmp;
-	ssize_t	flag;
+	int		flag;
 
 	tmp = (char *)malloc(sizeof(char) * BUFFER_SIZE + 1);
 	if (!tmp)
@@ -24,16 +24,13 @@ char	*ft_next_line(int fd, char *buff)
 	while (!ft_check_nline(buff) && flag != 0)
 	{
 		flag = read(fd, tmp, BUFFER_SIZE);
-		//printf("%i é flag\n", flag);
 		if (flag < 0)
 		{
 			free(tmp);
 			return (NULL);
 		}
-		tmp[flag] = 0;
+		tmp[flag] = '\0';
 		buff = ft_join(buff, tmp);
-		//printf("%s é temp\n", tmp);
-		//printf("%s é buff\n", buff);
 	}
 	free(tmp);
 	return (buff);
@@ -42,20 +39,17 @@ char	*ft_next_line(int fd, char *buff)
 char	*get_next_line(int fd)
 {
 	char		*str;
-	static char	*stmp;
+	static char	*stmp[OPEN_MAX];
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || fd == 1000 || BUFFER_SIZE <= 0)
 		return (NULL);
-	stmp = ft_next_line(fd, stmp);
-	//printf("stmp dopo next_line: %s\n", stmp);
-	if (!stmp || !*stmp)
+	stmp[fd] = ft_next_line(fd, stmp[fd]);
+	if (!stmp[fd] || !*stmp[fd])
 	{
-		free(stmp);
+		free(stmp[fd]);
 		return (NULL);
 	}
-	str = ft_strchr_onlynl(stmp);
-	//printf("str dopo nextline: %s\n", str);
-	stmp = fclear(stmp);
-	//printf("stmp dopo clear: %s\n", stmp);
+	str = ft_strchr_onlynl(stmp[fd]);
+	stmp[fd] = fclear(stmp[fd]);
 	return (str);
 }

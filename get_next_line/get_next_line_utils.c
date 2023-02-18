@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "./get_next_line.h"
 
 char	*ft_strchr_onlynl(char *s)
 {
@@ -34,7 +34,7 @@ char	*ft_strchr_onlynl(char *s)
 		str[i] = '\n';
 		++i;
 	}
-	str[i] = 0;
+	str[i] = '\0';
 	return (str);
 }
 
@@ -46,8 +46,8 @@ char	*fclear(char *s)
 
 	i = 0;
 	while (s[i] && s[i] != '\n')
-		++i;
-	if (!s)
+	++i;
+	if (!s[i])
 	{
 		free(s);
 		return (NULL);
@@ -62,14 +62,14 @@ char	*fclear(char *s)
 	j = 0;
 	while (s[i])
 		resto[j++] = s[i++];
-	resto[j] = 0;
+	resto[j] = '\0';
 	free(s);
 	return (resto);
 }
 
 char	*ft_check_nline(char *s)
 {
-	int	i;
+	size_t	i;
 
 	if (!s)
 		return (NULL);
@@ -85,9 +85,9 @@ char	*ft_check_nline(char *s)
 
 char	*ft_join(char *s1, char *s2)
 {
-	char	*s_final;
 	int		i;
 	int		j;
+	char	*s_final;
 
 	if (!s1 && (!s2 || !*s2))
 		return (NULL);

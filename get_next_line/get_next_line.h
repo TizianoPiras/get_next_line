@@ -24,6 +24,8 @@
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <fcntl.h>
+# include <sys/uio.h>
+# include <limits.h>
 # include <stdio.h>
 
 char	*ft_next_line(int fd, char *buff);
